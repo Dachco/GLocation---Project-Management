@@ -377,13 +377,6 @@ backend/src/
 - [ ] Sistema de comentarios
 - [ ] Colaboración en equipo
 
-## 🤝 Contribución
-
-1. Fork el proyecto
-2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
 
 ## 📄 Licencia
 
@@ -414,14 +407,6 @@ Este proyecto está bajo la Licencia ISC.
 
 Desarrollado por **David** como parte del proyecto GLocation.
 
-**Contacto**: [GitHub](https://github.com/tu-usuario) | [LinkedIn](https://linkedin.com/in/tu-perfil)
-
----
-
-## 📄 Licencia
-
-Este proyecto está bajo la **Licencia ISC**. Ver el archivo [LICENSE](LICENSE) para más detalles.
-
 ---
 
 ## 📝 Historial de Cambios
@@ -451,10 +436,3 @@ Este proyecto está bajo la **Licencia ISC**. Ver el archivo [LICENSE](LICENSE) 
 - ✅ Documentación con Swagger
 - ✅ Containerización con Docker
 - ✅ Configuración de Docker Compose
-
-### 🔧 Problemas Resueltos
-1. **Error de Prisma Client** - Solucionado con `npx prisma generate` en docker-compose
-2. **Dependencias faltantes** - Agregadas todas las dependencias necesarias
-3. **Optimización de Docker** - Mejorada la estructura para cache eficiente
-4. **Código limpio** - Eliminados comentarios técnicos innecesarios
-5. **Documentación** - README completamente actualizado y profesional

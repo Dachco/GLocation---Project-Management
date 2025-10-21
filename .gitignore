@@ -119,3 +119,4 @@ dist/
 
 # Prisma
 prisma/migrations/
+/src/generated/prisma
