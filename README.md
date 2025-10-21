@@ -422,6 +422,44 @@ Este proyecto está bajo la Licencia ISC.
 - **Móvil**: Vista optimizada con tarjetas y navegación táctil
 - **Tablet**: Diseño adaptativo para pantallas medianas
 
+## 📸 Evidencias Visuales del Proyecto
+
+### 🖥️ Interfaz de Escritorio (Desktop)
+
+#### Vista Principal - Gestión de Proyectos
+![Vista Principal - Desktop](screenshots/1.%20Web%20-%20Principal%20View.png)
+*Interfaz principal mostrando la tabla de proyectos con diseño responsivo*
+
+#### Crear y Actualizar Proyectos
+![Crear y Actualizar - Desktop](screenshots/2.%20Web%20-%20Create,%20Update.png)
+*Formulario para crear y editar proyectos con validaciones*
+
+#### Reportes y Análisis
+![Reportes y Análisis - Desktop](screenshots/3.%20Web%20-%20Report,%20Analysis.png)
+*Página de análisis con gráficos interactivos de barras y pie*
+
+#### Análisis con IA
+![Análisis IA - Desktop](screenshots/4.%20Web%20-%20AI%20Analysis.png)
+*Análisis inteligente con ChatGPT mostrando riesgos y recomendaciones*
+
+### 📱 Interfaz Móvil (Mobile)
+
+#### Vista Principal - Móvil
+![Vista Principal - Móvil](screenshots/5.%20Movil%20-%20Principal%20View.png)
+*Vista optimizada para móvil con tarjetas de proyectos*
+
+#### Crear y Actualizar - Móvil
+![Crear y Actualizar - Móvil](screenshots/6.%20Movil%20-%20Create,%20Update.png)
+*Formulario móvil optimizado para pantallas táctiles*
+
+#### Reportes y Análisis - Móvil
+![Reportes y Análisis - Móvil](screenshots/7.%20Movil%20-%20Report,%20Analysis.png)
+*Gráficos adaptativos para dispositivos móviles*
+
+#### Análisis IA - Móvil
+![Análisis IA - Móvil](screenshots/8.%20Movil%20-%20AI%20Analysis.png)
+*Análisis inteligente optimizado para móvil*
+
 ## 🏆 Logros del Proyecto
 
 - ✅ **100% Funcional** - Sistema completo y operativo
