@@ -124,7 +124,7 @@ Por favor responde en formato JSON con la siguiente estructura:
 }`;
 
         const completion = await openai.chat.completions.create({
-          model: "gpt-3.5-turbo",
+          model: process.env.OPENAI_MODEL || "gpt-3.5-turbo",
           messages: [
             {
               role: "system",
@@ -135,8 +135,8 @@ Por favor responde en formato JSON con la siguiente estructura:
               content: prompt
             }
           ],
-          max_tokens: 1000,
-          temperature: 0.7
+          max_tokens: parseInt(process.env.OPENAI_MAX_TOKENS) || 1000,
+          temperature: parseFloat(process.env.OPENAI_TEMPERATURE) || 0.7
         });
 
         const respuestaIA = JSON.parse(completion.choices[0].message.content);

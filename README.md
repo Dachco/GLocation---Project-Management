@@ -98,17 +98,35 @@ cd GLocation-Project_Management
 ### 2. Configurar variables de entorno
 Crear archivo `.env` en el directorio `backend/`:
 ```env
+# Base de datos
 DATABASE_URL="postgresql://postgres:postgres@postgres:5432/proyectosdb"
+
+# Puerto del servidor
 PORT=4000
+
+# Configuración de OpenAI (Opcional)
 OPENAI_API_KEY="tu-api-key-de-openai-aqui"
+OPENAI_MODEL="gpt-4o-mini"
+OPENAI_MAX_TOKENS=1000
+OPENAI_TEMPERATURE=0.7
+OPENAI_TIMEOUT_MS=60000
 ```
 
 **Nota**: Las variables de entorno ya están configuradas en `docker-compose.yml` para desarrollo con Docker.
 
 #### 🔑 Configuración de OpenAI (Opcional)
 Para habilitar el análisis inteligente con ChatGPT:
+
+**Variables disponibles:**
+- `OPENAI_API_KEY`: Tu API key de OpenAI (requerida)
+- `OPENAI_MODEL`: Modelo a usar (default: "gpt-3.5-turbo", recomendado: "gpt-4o-mini")
+- `OPENAI_MAX_TOKENS`: Máximo de tokens en la respuesta (default: 1000)
+- `OPENAI_TEMPERATURE`: Creatividad de la respuesta 0-1 (default: 0.7)
+- `OPENAI_TIMEOUT_MS`: Timeout en milisegundos (default: 60000)
+
+**Pasos:**
 1. Obtén tu API key en [OpenAI Platform](https://platform.openai.com/api-keys)
-2. Crea un archivo `.env` en `backend/` con: `OPENAI_API_KEY="tu-api-key-aqui"`
+2. Crea el archivo `.env` con la configuración completa mostrada arriba
 3. El docker-compose.yml cargará automáticamente las variables del archivo .env
 
 **Sin API key**: El sistema funcionará con análisis local básico.
