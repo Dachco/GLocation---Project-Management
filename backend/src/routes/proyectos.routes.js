@@ -11,7 +11,7 @@ const ctrl = require('../controllers/proyectos.controller');
 
 /**
  * @swagger
- * /proyectos:
+ * /api/proyectos:
  *   get:
  *     summary: Obtener todos los proyectos
  *     tags: [Proyectos]
@@ -56,7 +56,7 @@ router.get('/', ctrl.getAll);
 
 /**
  * @swagger
- * /proyectos:
+ * /api/proyectos:
  *   post:
  *     summary: Crear un nuevo proyecto
  *     tags: [Proyectos]
@@ -136,7 +136,7 @@ router.post('/', ctrl.create);
 
 /**
  * @swagger
- * /proyectos/{id}:
+ * /api/proyectos/{id}:
  *   get:
  *     summary: Obtener un proyecto por ID
  *     tags: [Proyectos]
@@ -197,7 +197,7 @@ router.get('/:id', ctrl.getById);
 
 /**
  * @swagger
- * /proyectos/{id}:
+ * /api/proyectos/{id}:
  *   put:
  *     summary: Actualizar un proyecto
  *     tags: [Proyectos]
@@ -290,7 +290,7 @@ router.put('/:id', ctrl.update);
 
 /**
  * @swagger
- * /proyectos/{id}:
+ * /api/proyectos/{id}:
  *   delete:
  *     summary: Eliminar un proyecto
  *     tags: [Proyectos]
