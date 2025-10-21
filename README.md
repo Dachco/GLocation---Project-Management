@@ -91,7 +91,7 @@ model Proyecto {
 
 ### 1. Clonar el repositorio
 ```bash
-git clone <url-del-repositorio>
+git clone <https://github.com/Dachco/GLocation---Project-Management.git>
 cd GLocation-Project_Management
 ```
 
