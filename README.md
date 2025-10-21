@@ -17,33 +17,75 @@ Sistema completo de gestión de proyectos con interfaz web moderna que incluye:
 
 ## 🏗️ Arquitectura del Proyecto
 
+### 📁 Estructura de Directorios
 ```
 GLocation-Project_Management/
 ├── backend/                    # Backend Node.js
 │   ├── src/
 │   │   ├── controllers/        # Controladores de la API
+│   │   │   ├── proyectos.controller.js    # CRUD de proyectos
+│   │   │   └── analisis.controller.js     # Análisis y gráficos
 │   │   ├── services/          # Lógica de negocio
+│   │   │   ├── proyectos.service.js       # Lógica CRUD
+│   │   │   └── analisis.service.js        # Lógica de análisis e IA
 │   │   ├── routes/            # Rutas de la API
+│   │   │   ├── proyectos.routes.js        # Rutas CRUD
+│   │   │   └── analisis.routes.js         # Rutas de análisis
 │   │   ├── middlewares/       # Middlewares personalizados
-│   │   ├── config/            # Configuración de la base de datos
-│   │   └── app.js             # Punto de entrada de la aplicación
+│   │   │   └── errorHandler.js            # Manejo de errores
+│   │   ├── config/            # Configuración
+│   │   │   ├── db.js                      # Configuración de Prisma
+│   │   │   └── openai.js                  # Configuración de OpenAI
+│   │   └── app.js             # Punto de entrada (configuración)
 │   ├── prisma/
-│   │   ├── schema.prisma      # Esquema de la base de datos
-│   │   └── seed.js            # Datos de prueba
+│   │   └── schema.prisma      # Esquema de la base de datos
 │   ├── Dockerfile             # Configuración del contenedor
 │   └── package.json           # Dependencias del proyecto
 ├── frontend/                   # Frontend React completo
 │   ├── src/
 │   │   ├── components/         # Componentes reutilizables
+│   │   │   ├── ProyectosTable.jsx         # Tabla de proyectos
+│   │   │   ├── ProyectoForm.jsx           # Formulario de proyectos
+│   │   │   ├── Graficos.jsx               # Gráficos interactivos
+│   │   │   └── AnalisisIA.jsx             # Análisis con IA
 │   │   ├── pages/             # Páginas principales
+│   │   │   ├── ProyectosPage.jsx          # Página de proyectos
+│   │   │   └── AnalisisPage.jsx           # Página de análisis
 │   │   ├── services/          # Servicios de API
+│   │   │   └── api.js                     # Cliente HTTP
 │   │   └── App.jsx            # Aplicación principal
+│   ├── public/
+│   │   └── favicon.ico        # Favicon personalizado
 │   ├── Dockerfile             # Configuración del contenedor
 │   ├── nginx.conf             # Configuración de Nginx
 │   └── package.json           # Dependencias del frontend
+├── screenshots/               # Evidencias visuales
+│   ├── 1. Web - Principal View.png
+│   ├── 2. Web - Create, Update.png
+│   ├── 3. Web - Report, Analysis.png
+│   ├── 4. Web - AI Analysis.png
+│   ├── 5. Movil - Principal View.png
+│   ├── 6. Movil - Create, Update.png
+│   ├── 7. Movil - Report, Analysis.png
+│   └── 8. Movil - AI Analysis.png
 ├── docker-compose.yml         # Orquestación de contenedores
 └── README.md                  # Documentación del proyecto
 ```
+
+### 🏛️ Patrón de Arquitectura
+
+**Backend - Patrón MVC + Servicios:**
+- **Modelos**: Prisma ORM con PostgreSQL
+- **Vistas**: API REST con respuestas JSON
+- **Controladores**: Manejo de requests/responses
+- **Servicios**: Lógica de negocio separada
+- **Rutas**: Definición de endpoints con Swagger
+
+**Frontend - Arquitectura de Componentes:**
+- **Componentes**: Reutilizables y modulares
+- **Páginas**: Composición de componentes
+- **Servicios**: Comunicación con API
+- **Estado**: React hooks para manejo de estado
 
 ## 🚀 Tecnologías Utilizadas
 
@@ -313,18 +355,44 @@ npm start
 ### Estructura de archivos del backend
 ```
 backend/src/
-├── controllers/
-│   └── proyectos.controller.js    # Controladores de proyectos
-├── services/
-│   └── proyectos.service.js       # Lógica de negocio
-├── routes/
-│   └── proyectos.routes.js        # Definición de rutas
-├── middlewares/
-│   └── errorHandler.js            # Manejo de errores
-├── config/
-│   └── db.js                      # Configuración de Prisma
-└── app.js                         # Aplicación principal
+├── controllers/                   # Controladores (MVC)
+│   ├── proyectos.controller.js    # CRUD de proyectos
+│   └── analisis.controller.js     # Análisis y gráficos
+├── services/                      # Lógica de negocio
+│   ├── proyectos.service.js       # Servicios CRUD
+│   └── analisis.service.js        # Servicios de análisis e IA
+├── routes/                        # Definición de rutas
+│   ├── proyectos.routes.js        # Rutas CRUD con Swagger
+│   └── analisis.routes.js         # Rutas de análisis con Swagger
+├── middlewares/                   # Middlewares personalizados
+│   └── errorHandler.js            # Manejo centralizado de errores
+├── config/                        # Configuración
+│   ├── db.js                      # Configuración de Prisma
+│   └── openai.js                  # Configuración de OpenAI
+└── app.js                         # Punto de entrada (solo configuración)
 ```
+
+### 🎯 Principios de Arquitectura Aplicados
+
+**✅ Separación de Responsabilidades:**
+- Cada archivo tiene una responsabilidad específica
+- Lógica de negocio separada de controladores
+- Configuración centralizada
+
+**✅ Modularidad:**
+- Servicios reutilizables
+- Controladores enfocados en una funcionalidad
+- Rutas organizadas por dominio
+
+**✅ Mantenibilidad:**
+- Código fácil de testear
+- Fácil de modificar sin afectar otras partes
+- Documentación automática con Swagger
+
+**✅ Escalabilidad:**
+- Fácil agregar nuevos módulos
+- Servicios independientes
+- Arquitectura preparada para crecimiento
 
 ## 🐛 Solución de Problemas
 
@@ -356,12 +424,14 @@ backend/src/
 
 ### ✅ **Backend Completo**
 - **API REST** con Node.js y Express
+- **Arquitectura MVC + Servicios** bien estructurada
 - **CRUD completo** de proyectos con validaciones
 - **Base de datos PostgreSQL** con Prisma ORM
 - **Análisis inteligente** con ChatGPT (OpenAI)
 - **Análisis local** como fallback
-- **Documentación Swagger** automática
-- **Manejo de errores** robusto
+- **Documentación Swagger** automática y organizada
+- **Manejo de errores** centralizado y robusto
+- **Separación de responsabilidades** (Controllers, Services, Routes)
 - **Containerización** con Docker
 
 ### ✅ **Frontend Completo**
@@ -377,7 +447,9 @@ backend/src/
 - **Docker Compose** para orquestación
 - **Configuración de producción** optimizada
 - **Variables de entorno** configuradas
+- **Arquitectura escalable** y mantenible
 - **Documentación completa** del proyecto
+- **Favicon personalizado** para identidad visual
 
 ## 📈 Próximas Características
 
@@ -463,10 +535,13 @@ Este proyecto está bajo la Licencia ISC.
 ## 🏆 Logros del Proyecto
 
 - ✅ **100% Funcional** - Sistema completo y operativo
+- ✅ **Arquitectura Sólida** - Patrón MVC + Servicios bien implementado
 - ✅ **Responsive Design** - Optimizado para todos los dispositivos
 - ✅ **Dockerizado** - Fácil despliegue y escalabilidad
 - ✅ **Documentado** - Código limpio y documentación completa
+- ✅ **Modular** - Separación clara de responsabilidades
 - ✅ **Moderno** - Tecnologías actuales y mejores prácticas
+- ✅ **Profesional** - Favicon y evidencias visuales incluidas
 
 ## 👨‍💻 Autor
 
