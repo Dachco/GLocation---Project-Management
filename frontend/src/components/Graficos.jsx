@@ -50,8 +50,7 @@ const Graficos = ({ data, loading }) => {
     'pendiente': '#FCD34D',
     'en_progreso': '#3B82F6',
     'completado': '#10B981',
-    'cancelado': '#EF4444',
-    'Activo': '#10B981'
+    'cancelado': '#EF4444'
   };
 
   const getColor = (estado) => {

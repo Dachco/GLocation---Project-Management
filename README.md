@@ -75,7 +75,7 @@ model Proyecto {
   id          Int      @id @default(autoincrement())
   nombre      String
   descripcion String?
-  estado      String   @default("pendiente")
+  estado      String   @default("pendiente") // pendiente, en_progreso, completado, cancelado
   fechaInicio DateTime?
   fechaFin    DateTime?
   createdAt   DateTime @default(now())

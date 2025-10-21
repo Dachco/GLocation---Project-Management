@@ -71,7 +71,7 @@ app.post('/api/analisis', async (req, res) => {
     // Estadísticas básicas
     const total = proyectos.length;
     const completados = proyectos.filter(p => p.estado === 'completado').length;
-    const enProgreso = proyectos.filter(p => p.estado === 'en_progreso' || p.estado === 'Activo').length;
+    const enProgreso = proyectos.filter(p => p.estado === 'en_progreso').length;
     const pendientes = proyectos.filter(p => p.estado === 'pendiente').length;
     const cancelados = proyectos.filter(p => p.estado === 'cancelado').length;
 

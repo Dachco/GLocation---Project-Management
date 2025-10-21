@@ -45,7 +45,7 @@ const AnalisisIA = ({ onAnalizar, loading, proyectos = [] }) => {
           </div>
           <div className="text-center p-4 bg-gray-50 rounded-lg">
             <div className="text-2xl font-bold text-yellow-600">
-              {proyectos.filter(p => p.estado === 'en_progreso' || p.estado === 'Activo').length}
+              {proyectos.filter(p => p.estado === 'en_progreso').length}
             </div>
             <div className="text-sm text-gray-600">En Progreso</div>
           </div>

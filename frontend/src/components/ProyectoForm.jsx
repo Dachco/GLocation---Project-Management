@@ -38,8 +38,7 @@ const ProyectoForm = ({ proyecto, onSubmit, onCancel, loading }) => {
     { value: 'pendiente', label: 'Pendiente' },
     { value: 'en_progreso', label: 'En Progreso' },
     { value: 'completado', label: 'Completado' },
-    { value: 'cancelado', label: 'Cancelado' },
-    { value: 'Activo', label: 'Activo' }
+    { value: 'cancelado', label: 'Cancelado' }
   ];
 
   return (
