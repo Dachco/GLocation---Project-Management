@@ -100,9 +100,18 @@ Crear archivo `.env` en el directorio `backend/`:
 ```env
 DATABASE_URL="postgresql://postgres:postgres@postgres:5432/proyectosdb"
 PORT=4000
+OPENAI_API_KEY="tu-api-key-de-openai-aqui"
 ```
 
 **Nota**: Las variables de entorno ya están configuradas en `docker-compose.yml` para desarrollo con Docker.
+
+#### 🔑 Configuración de OpenAI (Opcional)
+Para habilitar el análisis inteligente con ChatGPT:
+1. Obtén tu API key en [OpenAI Platform](https://platform.openai.com/api-keys)
+2. Crea un archivo `.env` en `backend/` con: `OPENAI_API_KEY="tu-api-key-aqui"`
+3. El docker-compose.yml cargará automáticamente las variables del archivo .env
+
+**Sin API key**: El sistema funcionará con análisis local básico.
 
 ### 3. Ejecutar con Docker Compose
 ```bash
@@ -331,7 +340,8 @@ backend/src/
 - **API REST** con Node.js y Express
 - **CRUD completo** de proyectos con validaciones
 - **Base de datos PostgreSQL** con Prisma ORM
-- **Análisis inteligente** con detección de riesgos
+- **Análisis inteligente** con ChatGPT (OpenAI)
+- **Análisis local** como fallback
 - **Documentación Swagger** automática
 - **Manejo de errores** robusto
 - **Containerización** con Docker
@@ -360,9 +370,10 @@ backend/src/
 - [ ] Middleware de seguridad
 
 ### 🤖 **Inteligencia Artificial**
-- [ ] Integración con APIs de IA reales (Gemini, OpenAI)
+- ✅ **Integración con ChatGPT** - Análisis inteligente de proyectos
+- [ ] Integración con otras APIs de IA (Gemini, Claude)
 - [ ] Análisis predictivo de proyectos
-- [ ] Recomendaciones personalizadas
+- [ ] Recomendaciones personalizadas avanzadas
 - [ ] Chatbot para consultas
 
 ### 📊 **Reportes y Analytics**
@@ -381,8 +392,6 @@ backend/src/
 ## 📄 Licencia
 
 Este proyecto está bajo la Licencia ISC.
-
-## 📸 Capturas de Pantalla
 
 ### Interfaz Principal
 - **Gestión de Proyectos**: Tabla responsiva con acciones CRUD

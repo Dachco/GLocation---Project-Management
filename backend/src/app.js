@@ -59,7 +59,7 @@ app.get('/api/graficos', async (req, res) => {
   }
 });
 
-// Análisis inteligente de proyectos con detección de riesgos y recomendaciones
+// Análisis inteligente de proyectos con IA generativa (ChatGPT)
 app.post('/api/analisis', async (req, res) => {
   try {
     const proyectos = req.body;
@@ -68,6 +68,7 @@ app.post('/api/analisis', async (req, res) => {
       return res.status(400).json({ error: 'Se requieren proyectos para analizar' });
     }
 
+    // Estadísticas básicas
     const total = proyectos.length;
     const completados = proyectos.filter(p => p.estado === 'completado').length;
     const enProgreso = proyectos.filter(p => p.estado === 'en_progreso' || p.estado === 'Activo').length;
@@ -82,49 +83,117 @@ app.post('/api/analisis', async (req, res) => {
     }).length;
 
     const sinFechaFin = proyectos.filter(p => !p.fechaFin && p.estado !== 'completado' && p.estado !== 'cancelado').length;
-    let resumen = `Análisis de ${total} proyectos:\n\n`;
-    resumen += `• ${completados} completados (${((completados/total)*100).toFixed(1)}%)\n`;
-    resumen += `• ${enProgreso} en progreso (${((enProgreso/total)*100).toFixed(1)}%)\n`;
-    resumen += `• ${pendientes} pendientes (${((pendientes/total)*100).toFixed(1)}%)\n`;
-    resumen += `• ${cancelados} cancelados (${((cancelados/total)*100).toFixed(1)}%)\n\n`;
-    
-    if (atrasados > 0) {
-      resumen += `⚠️ ${atrasados} proyectos están atrasados\n`;
-    }
-    if (sinFechaFin > 0) {
-      resumen += `📅 ${sinFechaFin} proyectos no tienen fecha de fin definida\n`;
-    }
 
-    const riesgos = [];
-    if (atrasados > 0) {
-      riesgos.push(`${atrasados} proyectos están atrasados y requieren atención inmediata`);
-    }
-    if (sinFechaFin > 0) {
-      riesgos.push(`${sinFechaFin} proyectos no tienen fecha de fin, lo que puede causar retrasos`);
-    }
-    if (enProgreso > total * 0.7) {
-      riesgos.push('Más del 70% de los proyectos están en progreso, puede haber sobrecarga del equipo');
-    }
-    if (completados < total * 0.2) {
-      riesgos.push('Menos del 20% de los proyectos están completados, revisar la eficiencia del proceso');
-    }
+    // Preparar datos para análisis con IA
+    const proyectosParaAnalizar = proyectos.map(p => ({
+      nombre: p.nombre,
+      descripcion: p.descripcion || 'Sin descripción',
+      estado: p.estado,
+      fechaInicio: p.fechaInicio,
+      fechaFin: p.fechaFin
+    }));
 
-    const recomendaciones = [];
-    if (atrasados > 0) {
-      recomendaciones.push('Priorizar los proyectos atrasados y reasignar recursos si es necesario');
-    }
-    if (sinFechaFin > 0) {
-      recomendaciones.push('Definir fechas de fin para todos los proyectos pendientes');
-    }
-    if (enProgreso > total * 0.6) {
-      recomendaciones.push('Considerar completar algunos proyectos antes de iniciar nuevos');
-    }
-    if (completados > total * 0.8) {
-      recomendaciones.push('Excelente rendimiento! Considerar iniciar nuevos proyectos');
+    let resumenIA = '';
+    let riesgos = [];
+    let recomendaciones = [];
+
+    try {
+      // Intentar usar ChatGPT si hay API key configurada
+      if (process.env.OPENAI_API_KEY) {
+        const openai = require('./config/openai');
+        
+        const prompt = `Analiza los siguientes proyectos y genera un resumen inteligente, identifica riesgos y proporciona recomendaciones:
+
+Proyectos:
+${JSON.stringify(proyectosParaAnalizar, null, 2)}
+
+Estadísticas:
+- Total: ${total}
+- Completados: ${completados} (${((completados/total)*100).toFixed(1)}%)
+- En progreso: ${enProgreso} (${((enProgreso/total)*100).toFixed(1)}%)
+- Pendientes: ${pendientes} (${((pendientes/total)*100).toFixed(1)}%)
+- Cancelados: ${cancelados} (${((cancelados/total)*100).toFixed(1)}%)
+- Atrasados: ${atrasados}
+- Sin fecha fin: ${sinFechaFin}
+
+Por favor responde en formato JSON con la siguiente estructura:
+{
+  "resumen": "Resumen detallado de los proyectos y su estado general",
+  "riesgos": ["Lista de riesgos identificados"],
+  "recomendaciones": ["Lista de recomendaciones específicas"]
+}`;
+
+        const completion = await openai.chat.completions.create({
+          model: "gpt-3.5-turbo",
+          messages: [
+            {
+              role: "system",
+              content: "Eres un experto en gestión de proyectos. Analiza los proyectos proporcionados y genera insights valiosos sobre su estado, riesgos y recomendaciones. Responde siempre en formato JSON válido."
+            },
+            {
+              role: "user",
+              content: prompt
+            }
+          ],
+          max_tokens: 1000,
+          temperature: 0.7
+        });
+
+        const respuestaIA = JSON.parse(completion.choices[0].message.content);
+        resumenIA = respuestaIA.resumen || '';
+        riesgos = respuestaIA.riesgos || [];
+        recomendaciones = respuestaIA.recomendaciones || [];
+      } else {
+        throw new Error('API key no configurada');
+      }
+    } catch (iaError) {
+      console.log('Usando análisis local (API key no configurada):', iaError.message);
+      
+      // Análisis local como fallback
+      resumenIA = `Análisis de ${total} proyectos:\n\n`;
+      resumenIA += `• ${completados} completados (${((completados/total)*100).toFixed(1)}%)\n`;
+      resumenIA += `• ${enProgreso} en progreso (${((enProgreso/total)*100).toFixed(1)}%)\n`;
+      resumenIA += `• ${pendientes} pendientes (${((pendientes/total)*100).toFixed(1)}%)\n`;
+      resumenIA += `• ${cancelados} cancelados (${((cancelados/total)*100).toFixed(1)}%)\n\n`;
+      
+      if (atrasados > 0) {
+        resumenIA += `⚠️ ${atrasados} proyectos están atrasados\n`;
+      }
+      if (sinFechaFin > 0) {
+        resumenIA += `📅 ${sinFechaFin} proyectos no tienen fecha de fin definida\n`;
+      }
+
+      // Riesgos locales
+      if (atrasados > 0) {
+        riesgos.push(`${atrasados} proyectos están atrasados y requieren atención inmediata`);
+      }
+      if (sinFechaFin > 0) {
+        riesgos.push(`${sinFechaFin} proyectos no tienen fecha de fin, lo que puede causar retrasos`);
+      }
+      if (enProgreso > total * 0.7) {
+        riesgos.push('Más del 70% de los proyectos están en progreso, puede haber sobrecarga del equipo');
+      }
+      if (completados < total * 0.2) {
+        riesgos.push('Menos del 20% de los proyectos están completados, revisar la eficiencia del proceso');
+      }
+
+      // Recomendaciones locales
+      if (atrasados > 0) {
+        recomendaciones.push('Priorizar los proyectos atrasados y reasignar recursos si es necesario');
+      }
+      if (sinFechaFin > 0) {
+        recomendaciones.push('Definir fechas de fin para todos los proyectos pendientes');
+      }
+      if (enProgreso > total * 0.6) {
+        recomendaciones.push('Considerar completar algunos proyectos antes de iniciar nuevos');
+      }
+      if (completados > total * 0.8) {
+        recomendaciones.push('Excelente rendimiento! Considerar iniciar nuevos proyectos');
+      }
     }
 
     const analisis = {
-      resumen,
+      resumen: resumenIA,
       estadisticas: {
         total,
         completados,
@@ -136,7 +205,8 @@ app.post('/api/analisis', async (req, res) => {
       },
       riesgos,
       recomendaciones,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
+      fuente_ia: process.env.OPENAI_API_KEY ? 'ChatGPT' : 'Análisis local'
     };
 
     res.json(analisis);

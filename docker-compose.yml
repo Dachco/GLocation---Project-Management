@@ -19,6 +19,8 @@ services:
     environment:
       DATABASE_URL: "postgresql://postgres:postgres@postgres:5432/proyectosdb"
       PORT: 4000
+    env_file:
+      - ./backend/.env
     ports:
       - "4000:4000"
     depends_on:
