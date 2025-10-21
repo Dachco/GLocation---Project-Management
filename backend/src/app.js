@@ -128,18 +128,51 @@ Por favor responde en formato JSON con la siguiente estructura:
           messages: [
             {
               role: "system",
-              content: "Eres un experto en gestión de proyectos. Analiza los proyectos proporcionados y genera insights valiosos sobre su estado, riesgos y recomendaciones. Responde siempre en formato JSON válido."
+              content: "Eres un experto en gestión de proyectos. Analiza los proyectos proporcionados y genera insights valiosos sobre su estado, riesgos y recomendaciones. Responde SIEMPRE en formato JSON válido sin caracteres adicionales."
             },
             {
               role: "user",
-              content: prompt
+              content: `Analiza estos proyectos y genera un resumen inteligente basado en sus descripciones y estados:
+
+${proyectosParaAnalizar.map(p => `- ${p.nombre}: ${p.descripcion} (Estado: ${p.estado})`).join('\n')}
+
+Estadísticas:
+- Total: ${total} proyectos
+- Completados: ${completados} (${((completados/total)*100).toFixed(1)}%)
+- En progreso: ${enProgreso} (${((enProgreso/total)*100).toFixed(1)}%)
+- Pendientes: ${pendientes} (${((pendientes/total)*100).toFixed(1)}%)
+- Cancelados: ${cancelados} (${((cancelados/total)*100).toFixed(1)}%)
+- Atrasados: ${atrasados}
+- Sin fecha fin: ${sinFechaFin}
+
+Responde en formato JSON:
+{
+  "resumen": "Análisis detallado de los proyectos basado en sus descripciones y patrones identificados",
+  "riesgos": ["Riesgos específicos identificados"],
+  "recomendaciones": ["Recomendaciones basadas en el análisis de contenido"]
+}`
             }
           ],
           max_tokens: parseInt(process.env.OPENAI_MAX_TOKENS) || 1000,
           temperature: parseFloat(process.env.OPENAI_TEMPERATURE) || 0.7
         });
 
-        const respuestaIA = JSON.parse(completion.choices[0].message.content);
+        let respuestaIA;
+        try {
+          const content = completion.choices[0].message.content.trim();
+          // Limpiar posibles caracteres markdown
+          const cleanContent = content.replace(/```json\n?|\n?```/g, '');
+          respuestaIA = JSON.parse(cleanContent);
+        } catch (parseError) {
+          console.log('Error parsing JSON, usando respuesta como texto:', parseError.message);
+          // Si falla el parsing, usar la respuesta como texto plano
+          respuestaIA = {
+            resumen: completion.choices[0].message.content,
+            riesgos: [],
+            recomendaciones: []
+          };
+        }
+        
         resumenIA = respuestaIA.resumen || '';
         riesgos = respuestaIA.riesgos || [];
         recomendaciones = respuestaIA.recomendaciones || [];
